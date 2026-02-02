@@ -1,0 +1,25 @@
+* {
+	box-sizing: border-box;
+}
+  
+body {
+	margin: 0;
+	font-family: "Open Sans", sans-serif;
+	background: var(--bg-primary);
+	color: var(--text-primary);
+	min-height: 100vh;
+}
+  
+a {
+	text-decoration: none;
+	color: inherit;
+}
+  
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.25s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
+}

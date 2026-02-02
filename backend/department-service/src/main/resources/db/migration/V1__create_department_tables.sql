@@ -1,0 +1,7 @@
+CREATE TABLE department (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    code VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT,
+    active BOOLEAN NOT NULL DEFAULT TRUE
+);

@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: hr-postgres
+    environment:
+      POSTGRES_DB: hr_platform
+      POSTGRES_USER: hr_user
+      POSTGRES_PASSWORD: hr_pass
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  artemis:
+    image: apache/activemq-artemis:2.40.0
+    container_name: artemis
+    environment:
+      ARTEMIS_USER: admin
+      ARTEMIS_PASSWORD: admin
+    ports:
+      - "61616:61616"
+      - "8161:8161"
+    volumes:
+      - artemis-data:/var/lib/artemis-instance
+      
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.0
+    container_name: keycloak
+    command:
+      - start-dev
+      - --import-realm
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/hr_platform
+      KC_DB_USERNAME: hr_user
+      KC_DB_PASSWORD: hr_pass
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    volumes:
+      # Provider SPI
+      - ./keycloak/providers:/opt/keycloak/providers
+      # Keycloak config
+      - ./keycloak/keycloak.conf:/opt/keycloak/conf/keycloak.conf
+      # Import realm settings(client + user + roles)
+      - ./keycloak/realm:/opt/keycloak/data/import
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres-data:
+  artemis-data:

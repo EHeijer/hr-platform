@@ -1,0 +1,45 @@
+<address-settings>
+	<!-- if you define auto-create on certain queues, management has to be auto-create -->
+	<address-setting match="activemq.management#">
+		<dead-letter-address>DLQ</dead-letter-address>
+		<expiry-address>ExpiryQueue</expiry-address>
+		<redelivery-delay>0</redelivery-delay>
+		<!-- with -1 only the global-max-size is in use for limiting -->
+		<max-size-bytes>-1</max-size-bytes>
+		<message-counter-history-day-limit>10</message-counter-history-day-limit>
+		<address-full-policy>PAGE</address-full-policy>
+		<auto-create-queues>true</auto-create-queues>
+		<auto-create-addresses>true</auto-create-addresses>
+	</address-setting>
+	<!--default for catch all-->
+	<address-setting match="#">
+		<dead-letter-address>DLQ</dead-letter-address>
+		<expiry-address>ExpiryQueue</expiry-address>
+		<redelivery-delay>0</redelivery-delay>
+		<message-counter-history-day-limit>10</message-counter-history-day-limit>
+		<address-full-policy>PAGE</address-full-policy>
+		<auto-create-queues>true</auto-create-queues>
+		<auto-create-addresses>true</auto-create-addresses>
+		<auto-delete-queues>false</auto-delete-queues>
+		<auto-delete-addresses>false</auto-delete-addresses>
+		<!-- The size of each page file -->
+		<page-size-bytes>10M</page-size-bytes>
+		<!-- When we start applying the address-full-policy, e.g paging -->
+		<!-- Both are disabled by default, which means we will use the global-max-size/global-max-messages  -->
+		<max-size-bytes>-1</max-size-bytes>
+		<max-size-messages>-1</max-size-messages>
+		<!-- When we read from paging into queues (memory) -->
+		<max-read-page-messages>-1</max-read-page-messages>
+		<max-read-page-bytes>20M</max-read-page-bytes>
+		<!-- Limit on paging capacity before starting to throw errors -->
+		<page-limit-bytes>-1</page-limit-bytes>
+		<page-limit-messages>-1</page-limit-messages>
+	</address-setting>
+	<address-setting match="keycloak-user-event-topic">
+		<dead-letter-address>keycloak-user-event-topic.DLQ</dead-letter-address>
+		<max-delivery-attempts>5</max-delivery-attempts>
+		<redelivery-delay>2000</redelivery-delay>
+		<redelivery-delay-multiplier>2.0</redelivery-delay-multiplier>
+		<max-redelivery-delay>30000</max-redelivery-delay>
+	</address-setting>
+</address-settings>
